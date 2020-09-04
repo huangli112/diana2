@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import {EMAIL_REGEXP, PASSWORD_REGEXP} from '../../../core/patterns/core.pattern';
+import { EMAIL_REGEXP, PASSWORD_REGEXP } from '../../../core/patterns/core.pattern';
 import { AuthenticationService } from '../../../core/services/authentication.service';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import {LoginService} from '../../../core/services/login.service';
 
 @Component({
   selector: 'app-entrance-login',
@@ -11,12 +13,14 @@ import { AuthenticationService } from '../../../core/services/authentication.ser
 })
 export class LoginComponent implements OnInit {
   validateForm: FormGroup;
-  private loginValue;
-
+  private loginValue = 'auth_login';
+  private loginKey = 'isLoggedIn' ;
   constructor(
     private router: Router,
     private fb: FormBuilder,
-    private auth: AuthenticationService
+    private auth: AuthenticationService,
+    private message: NzMessageService,
+    private loginService: LoginService
   ) {
     this.validateForm = this.fb.group({
       username: [null, [Validators.required, Validators.pattern(EMAIL_REGEXP)]],
@@ -24,8 +28,9 @@ export class LoginComponent implements OnInit {
       remember: [true]
     });
   }
-  ngOnInit() {
+  ngOnInit(): void {
   }
+
 
   submitForm(value): void {
     const loginData = Object.assign({}, value);
@@ -37,10 +42,14 @@ export class LoginComponent implements OnInit {
           localStorage.setItem(this.loginValue, loginData.username);
         }
         if (data.status === 200) {
+          this.message.success(`Operation is successful`);
+          sessionStorage.setItem(this.loginKey, 'true');
           this.router.navigate(['home']);
         }else if (data.status === 220){
+          this.message.error(`Invalid Email or password`);
         }
       });
     }
   }
+
 }

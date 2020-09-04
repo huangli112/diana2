@@ -6,10 +6,9 @@ import { IconDefinition } from '@ant-design/icons-angular';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-
+import { NzMessageModule } from 'ng-zorro-antd/message';
 
 import { LockFill, UserOutline } from '@ant-design/icons-angular/icons';
-
 const icons: IconDefinition[] = [UserOutline, LockFill];
 
 @NgModule({
@@ -21,7 +20,8 @@ const icons: IconDefinition[] = [UserOutline, LockFill];
     AppRoutingModule,
     HttpClientModule,
     NzIconModule.forRoot(icons),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    NzMessageModule
 
   ],
   providers: [],

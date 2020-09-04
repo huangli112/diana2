@@ -1,15 +1,20 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
+import { LoginGuard } from './core/guard/login.guard';
+
 
 const routes: Routes = [
   {
-    path: 'entrance', loadChildren: () => import('./modules/entrance/entrance.module').then(m => m.EntranceModule)
-},
-  {
-    path: 'home', loadChildren: () => import ('./modules/home/home.module').then(m => m.HomeModule)
+    path: 'entrance', loadChildren: () => import('./modules/entrance/entrance.module').then(m => m.EntranceModule),
+
+
   },
   {
-   path: '**' , redirectTo: 'entrance'
+    path: 'home', loadChildren: () => import ('./modules/home/home.module').then(m => m.HomeModule),
+    canActivate: [ LoginGuard ]
+  },
+  {
+   path: '**' , redirectTo: 'home'
   }
 ];
 
